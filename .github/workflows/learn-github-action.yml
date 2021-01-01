@@ -1,0 +1,39 @@
+name: learn-github-action
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
+jobs:
+  say-hello:
+    env:
+      Action: Hello
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        shell: bash
+        env:
+          Object: World
+        run: |
+          echo $Action $Object!
+  check-bats-version:
+    needs: [say-hello]
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:latest
+      env:
+        NODE_ENV: development
+      ports:
+        - 80
+      options: --cpus 1
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - name: Install bats
+        run: npm install -g bats
+      - name: Check bats version
+        run: bats -v
