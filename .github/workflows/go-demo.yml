@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'go-demo/**'
+      - '.github/workflows/go-demo.yml'
 defaults:
   run:
     shell: bash
@@ -25,4 +26,4 @@ jobs:
       - name: Install Dependencies
         run: go mod download
       - name: Test
-        run: go test .
+        run: go test -v .
